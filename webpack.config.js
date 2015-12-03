@@ -178,7 +178,7 @@ function env(configEnv) {
 }
 
 function getBanner() {
-  return 'Angular2 Webpack Starter v'+ pkg.version +' by @gdi2990 from @AngularClass';
+  return 'Angular2 Bank v'+ pkg.version +' by Ritter Insurance Marketing';
 }
 
 function root(args) {
