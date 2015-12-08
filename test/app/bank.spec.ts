@@ -149,7 +149,9 @@ describe('withdrawal', () => {
     let startingBalance = bank.getBalance(accountId)
 
     expect(() => bank.withdrawal(accountId, startingBalance + amount))
-      .toThrowError(`The requested withdrawal of '${amount}' cannot be completed, there is only '${startingBalance}' available in this account.`)
+      .toThrowError(
+        `The requested withdrawal of '${amount}' cannot be completed, ` +
+        `there is only '${startingBalance}' available in this account.`)
   })
 
   it('should keep same balance for zero amount', () => {
@@ -217,7 +219,9 @@ describe('transfer', () => {
     let fromBalance = bank.getBalance(accountId)
 
     expect(() => bank.transfer(accountId, account2Id, amount))
-      .toThrowError(`The requested withdrawal of '${amount}' cannot be completed, there is only '${fromBalance}' available in account '${accountId}'.`)
+      .toThrowError(
+        `The requested withdrawal of '${amount}' cannot be completed, ` +
+        `there is only '${fromBalance}' available in account '${accountId}'.`)
   })
 
   it('should keep same \'from\' balance for zero amount', () => {

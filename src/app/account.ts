@@ -1,8 +1,8 @@
 export default class Account {
-  id: string
-  balance: number
+  public id: string
+  public balance: number
 
-  constructor(id: string, initialBalance: number = 0) {
+  constructor(id: string, initialBalance = 0) {
     if (!id) {
       throw new Error('id must be provided.')
     }
@@ -19,8 +19,10 @@ export default class Account {
     this.balance = initialBalance
   }
 
+/* tslint:disable:quotemark */
   private isInteger(value: number) {
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger#Polyfill
     return typeof value === "number" && isFinite(value) && Math.floor(value) === value
   }
+/* tslint: enable */
 }

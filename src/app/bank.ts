@@ -7,7 +7,7 @@ export default class Bank {
     this.accounts = accounts
   }
 
-  openAccount(accountId: string, initialBalance: number = 0) : Bank {
+  public openAccount(accountId: string, initialBalance = 0) : Bank {
     let account = this.getAccount(accountId, /* errorIfDoesNotExist */ false)
 
     if (account) {
@@ -27,7 +27,7 @@ export default class Bank {
     return this
   }
 
-  closeAccount(accountId: string) : Bank {
+  public closeAccount(accountId: string) : Bank {
     let account = this.getAccount(accountId)
 
     if (account.balance !== 0) {
@@ -39,7 +39,7 @@ export default class Bank {
     return this
   }
 
-  deposit(accountId: string, amount: number) : Bank {
+  public deposit(accountId: string, amount: number) : Bank {
     let account = this.getAccount(accountId)
 
     if (!amount && amount !== 0) {
@@ -59,7 +59,7 @@ export default class Bank {
     return this
   }
 
-  withdrawal(accountId: string, amount: number) : Bank {
+  public withdrawal(accountId: string, amount: number) : Bank {
     let account = this.getAccount(accountId)
 
     if (!amount && amount !== 0) {
@@ -75,7 +75,9 @@ export default class Bank {
     }
 
     if (account.balance < amount) {
-      throw new Error(`The requested withdrawal of '${amount}' cannot be completed, there is only '${account.balance}' available in this account.`)
+      throw new Error(
+        `The requested withdrawal of '${amount}' cannot be completed, ` +
+        `there is only '${account.balance}' available in this account.`)
     }
 
     account.balance -= amount
@@ -83,7 +85,7 @@ export default class Bank {
     return this
   }
 
-  transfer(fromAccountId: string, toAccountId: string, amount: number) : Bank {
+  public transfer(fromAccountId: string, toAccountId: string, amount: number) : Bank {
     let fromAccount = this.getAccount(fromAccountId)
     let toAccount = this.getAccount(toAccountId)
 
@@ -100,7 +102,9 @@ export default class Bank {
     }
 
     if (fromAccount.balance < amount) {
-      throw new Error(`The requested withdrawal of '${amount}' cannot be completed, there is only '${fromAccount.balance}' available in account '${fromAccountId}'.`)
+      throw new Error(
+        `The requested withdrawal of '${amount}' cannot be completed, ` +
+        `there is only '${fromAccount.balance}' available in account '${fromAccountId}'.`)
     }
 
     fromAccount.balance -= amount
@@ -109,30 +113,29 @@ export default class Bank {
     return this
   }
 
-  getBalance(accountId: string) : number {
+  public getBalance(accountId: string) : number {
     let account = this.getAccount(accountId)
 
     return account.balance
   }
 
-  getAllAccounts() : Account[] {
+  public getAllAccounts() : Account[] {
     return this.accounts
   }
 
-  getTotalBankCurrency() : number {
+  public getTotalBankCurrency() : number {
     return this.accounts.map(x => x.balance).reduce((x, y) => x + y)
   }
 
-  private getAccount(accountId: string, errorIfDoesNotExist: boolean = true) : Account {
+  private getAccount(accountId: string, errorIfDoesNotExist = true) : Account {
     let matchedAccounts = this.accounts.filter(x => x.id === accountId)
 
     if (matchedAccounts.length === 0) {
       if (errorIfDoesNotExist) {
         throw new Error(`There was no account with id of '${accountId}'.`)
       }
-      else {
-        return null
-      }
+
+      return null
     }
 
     if (matchedAccounts.length > 1) {
@@ -142,8 +145,10 @@ export default class Bank {
     return matchedAccounts[0]
   }
 
+/* tslint:disable:quotemark */
   private isInteger(value: number) {
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger#Polyfill
     return typeof value === "number" && isFinite(value) && Math.floor(value) === value
   }
+/* tslint:enable */
 }

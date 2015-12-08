@@ -1,6 +1,7 @@
 /// <reference path="../../src/typings/_custom.d.ts" />
 
 // Import necessary wrappers for Jasmine
+/* tslint:disable:no-unused-variable */
 import {
   beforeEachProviders,
   describe,
@@ -15,6 +16,7 @@ import {
 } from 'angular2/testing';
 import { Component, provide} from 'angular2/angular2';
 import {MockBackend, BaseRequestOptions, Http} from 'angular2/http';
+/* tslint: enable */
 
 // Load the implementations that should be tested
 import { App } from '../../src/app/app';
@@ -25,10 +27,11 @@ describe('App', () => {
     App,
     BaseRequestOptions,
     MockBackend,
-    provide(Http, {useFactory:
-      function(backend, defaultOptions) {
+    provide(Http, {
+      deps: [MockBackend, BaseRequestOptions],
+      useFactory: function(backend, defaultOptions) {
         return new Http(backend, defaultOptions);
-      },
-      deps: [MockBackend, BaseRequestOptions]})
+      }
+    })
   ]);
 });

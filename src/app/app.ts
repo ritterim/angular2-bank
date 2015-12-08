@@ -1,9 +1,11 @@
+/* tslint:disable:no-unused-variable */
 /*
  * Angular 2 decorators and services
  */
 import {Directive, Component, View, ElementRef} from 'angular2/angular2';
 import {RouteConfig, Router} from 'angular2/router';
 import {Http, Headers} from 'angular2/http';
+/* tslint:enable */
 
 /*
  * Angular Directives
@@ -16,8 +18,8 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
  * Top Level Component
  */
 @Component({
-  selector: 'app',
   directives: [ CORE_DIRECTIVES, FORM_DIRECTIVES, ROUTER_DIRECTIVES ],
+  selector: 'app',
   styles: [`
     .title {
       font-family: Arial, Helvetica, sans-serif;
