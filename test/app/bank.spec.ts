@@ -117,30 +117,30 @@ describe('deposit', () => {
   })
 })
 
-describe('withdrawal', () => {
+describe('withdraw', () => {
   it('should error if account does not exist', () => {
     let accountIdDoesNotExist = 'does-not-exist'
 
-    expect(() => bank.withdrawal(accountIdDoesNotExist, 0))
+    expect(() => bank.withdraw(accountIdDoesNotExist, 0))
       .toThrowError(`There was no account with id of '${accountIdDoesNotExist}'.`)
   })
 
   it('should error for missing amount', () => {
-    expect(() => bank.withdrawal(accountId, undefined))
+    expect(() => bank.withdraw(accountId, undefined))
       .toThrowError('amount must be specified.')
   })
 
   it('should error for negative amount', () => {
     let amount = -1
 
-    expect(() => bank.withdrawal(accountId, amount))
+    expect(() => bank.withdraw(accountId, amount))
       .toThrowError(`The amount specified '${amount}' must not be negative.`)
   })
 
   it('should error for decimal amount', () => {
     let amount = 123.45
 
-    expect(() => bank.withdrawal(accountId, amount))
+    expect(() => bank.withdraw(accountId, amount))
       .toThrowError(`The amount specified '${amount}' must be an integer (decimals are not supported)`)
   })
 
@@ -148,16 +148,16 @@ describe('withdrawal', () => {
     let amount = 1
     let startingBalance = bank.getBalance(accountId)
 
-    expect(() => bank.withdrawal(accountId, startingBalance + amount))
+    expect(() => bank.withdraw(accountId, startingBalance + amount))
       .toThrowError(
-        `The requested withdrawal of '${amount}' cannot be completed, ` +
+        `The requested withdraw of '${amount}' cannot be completed, ` +
         `there is only '${startingBalance}' available in this account.`)
   })
 
   it('should keep same balance for zero amount', () => {
     let startingBalance = bank.getBalance(accountId)
 
-    bank.withdrawal(accountId, 0)
+    bank.withdraw(accountId, 0)
 
     expect(bank.getBalance(accountId)).toEqual(startingBalance)
   })
@@ -167,7 +167,7 @@ describe('withdrawal', () => {
     let startingBalance = bank.getBalance(accountId)
     bank.deposit(accountId, amount)
 
-    bank.withdrawal(accountId, amount)
+    bank.withdraw(accountId, amount)
 
     expect(bank.getBalance(accountId)).toEqual(startingBalance)
   })
@@ -220,7 +220,7 @@ describe('transfer', () => {
 
     expect(() => bank.transfer(accountId, account2Id, amount))
       .toThrowError(
-        `The requested withdrawal of '${amount}' cannot be completed, ` +
+        `The requested withdraw of '${amount}' cannot be completed, ` +
         `there is only '${fromBalance}' available in account '${accountId}'.`)
   })
 
