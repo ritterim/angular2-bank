@@ -8,7 +8,7 @@ An example bank implementation to experiment with Angular2, TypeScript, etc.
 
 - Create and close accounts
 - View account balances
-- Ability to deposit, withdrawal, and transfer account funds
+- Ability to deposit, withdraw, and transfer account funds
 
 # Setup
 

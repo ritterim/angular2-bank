@@ -59,7 +59,7 @@ export default class Bank {
     return this
   }
 
-  public withdrawal(accountId: string, amount: number) : Bank {
+  public withdraw(accountId: string, amount: number) : Bank {
     let account = this.getAccount(accountId)
 
     if (!amount && amount !== 0) {
@@ -76,7 +76,7 @@ export default class Bank {
 
     if (account.balance < amount) {
       throw new Error(
-        `The requested withdrawal of '${amount}' cannot be completed, ` +
+        `The requested withdraw of '${amount}' cannot be completed, ` +
         `there is only '${account.balance}' available in this account.`)
     }
 
@@ -103,7 +103,7 @@ export default class Bank {
 
     if (fromAccount.balance < amount) {
       throw new Error(
-        `The requested withdrawal of '${amount}' cannot be completed, ` +
+        `The requested withdraw of '${amount}' cannot be completed, ` +
         `there is only '${fromAccount.balance}' available in account '${fromAccountId}'.`)
     }
 
