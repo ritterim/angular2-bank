@@ -3,8 +3,8 @@ import {Account} from './account'
 export class Bank {
   private accounts: Account[]
 
-  constructor(accounts: Account[] = []) {
-    this.accounts = accounts
+  constructor() {
+    this.accounts = new Array<Account>()
   }
 
   public openAccount(accountId: string, initialBalance = 0) : Bank {
