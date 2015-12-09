@@ -12,7 +12,14 @@
     "listFiles": false,
     "outDir": "dist"
   },
+  "filesGlob": [
+    "./**/*.ts",
+    "!./node_modules/**/*.ts"
+  ],
   "files": [
     "src/app/bootstrap.ts"
-  ]
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  }
 }
