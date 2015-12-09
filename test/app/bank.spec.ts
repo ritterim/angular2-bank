@@ -35,7 +35,7 @@ describe('openAccount', () => {
     let initialBalance = 123.45
 
     expect(() => bank.openAccount('new-account', initialBalance))
-      .toThrowError(`The amount specified '${initialBalance}' must be an integer (decimals are not supported)`)
+      .toThrowError(`The amount specified '${initialBalance}' must be an integer (decimals are not supported).`)
   })
 
   it('should open account with correct balance', () => {
