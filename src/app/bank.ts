@@ -19,7 +19,7 @@ export default class Bank {
     }
 
     if (!this.isInteger(initialBalance)) {
-      throw new Error(`The amount specified '${initialBalance}' must be an integer (decimals are not supported)`)
+      throw new Error(`The amount specified '${initialBalance}' must be an integer (decimals are not supported).`)
     }
 
     this.accounts.push(new Account(accountId, initialBalance))
