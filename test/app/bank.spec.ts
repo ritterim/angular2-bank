@@ -8,8 +8,8 @@ import {
   it
 } from 'angular2/testing'
 
-import Bank from '../../src/app/bank'
-import Account from '../../src/app/account'
+import {Account} from '../../src/app/account'
+import {Bank} from '../../src/app/bank'
 
 let bank: Bank
 let accountId = 'account-1'

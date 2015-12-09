@@ -1,6 +1,6 @@
-import Account from './account'
+import {Account} from './account'
 
-export default class Bank {
+export class Bank {
   private accounts: Account[]
 
   constructor(accounts: Account[] = []) {

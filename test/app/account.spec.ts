@@ -7,7 +7,7 @@ import {
   it
 } from 'angular2/testing'
 
-import Account from '../../src/app/account'
+import {Account} from '../../src/app/account'
 
 describe('constructor', () => {
   it('should throw for missing id', () => {
