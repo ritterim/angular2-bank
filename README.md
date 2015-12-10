@@ -17,6 +17,7 @@ An example bank implementation to experiment with Angular2, TypeScript, etc.
 # Miscellaneous
 
 - Project starter: [https://github.com/AngularClass/angular2-webpack-starter/tree/43e30c791f12812ea7347753605f6875831ea808](https://github.com/AngularClass/angular2-webpack-starter/tree/43e30c791f12812ea7347753605f6875831ea808).
+- Useful reference for writing tests for Angular2 components: [https://github.com/juliemr/ng2-test-seed/blob/e2c833b3c8a2d58239534941ddea9fb1a76d7d26/src/test](https://github.com/juliemr/ng2-test-seed/blob/e2c833b3c8a2d58239534941ddea9fb1a76d7d26/src/test)
 
 # License
  [MIT](/LICENSE)

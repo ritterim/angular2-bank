@@ -14,11 +14,18 @@ import {CORE_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/angular2';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 
 /*
+ * Application Directives
+ */
+import {ShowBalancesComponent} from './ShowBalancesComponent'
+import {Bank} from './bank'
+
+/*
  * App Component
  * Top Level Component
  */
 @Component({
-  directives: [ CORE_DIRECTIVES, FORM_DIRECTIVES, ROUTER_DIRECTIVES ],
+  directives: [ CORE_DIRECTIVES, FORM_DIRECTIVES, ROUTER_DIRECTIVES, ShowBalancesComponent ],
+  providers: [ Bank ],
   selector: 'app',
   styles: [`
     .title {
@@ -34,6 +41,7 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
   </header>
 
   <main>
+    <show-balances></show-balances>
   </main>
 
   <footer>
