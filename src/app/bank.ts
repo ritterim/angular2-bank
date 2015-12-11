@@ -1,10 +1,10 @@
-import Account from './account'
+import {Account} from './account'
 
-export default class Bank {
+export class Bank {
   private accounts: Account[]
 
-  constructor(accounts: Account[] = []) {
-    this.accounts = accounts
+  constructor() {
+    this.accounts = new Array<Account>()
   }
 
   public openAccount(accountId: string, initialBalance = 0) : Bank {

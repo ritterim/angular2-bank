@@ -1,4 +1,4 @@
-export default class Account {
+export class Account {
   public id: string
   public balance: number
 

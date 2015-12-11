@@ -8,16 +8,13 @@ import {
   it
 } from 'angular2/testing'
 
-import Bank from '../../src/app/bank'
-import Account from '../../src/app/account'
+import {Bank} from '../../src/app/bank'
 
 let bank: Bank
 let accountId = 'account-1'
 
 beforeEachProviders(() => {
-  bank = new Bank([
-    new Account(accountId, 0)
-  ])
+  bank = new Bank().openAccount(accountId)
 })
 
 describe('openAccount', () => {
