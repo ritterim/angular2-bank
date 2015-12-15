@@ -1,10 +1,8 @@
-import {
-  Component,
-  CORE_DIRECTIVES
-} from 'angular2/angular2'
+import { Component } from 'angular2/core'
+import { CORE_DIRECTIVES } from 'angular2/common'
 
-import {Account} from './account'
-import {Bank} from './bank'
+import {Account} from '../account'
+import {Bank} from '../bank'
 
 @Component({
   directives: [ CORE_DIRECTIVES ],
@@ -21,7 +19,7 @@ import {Bank} from './bank'
       </tr>
     </thead>
     <tbody>
-      <tr *ng-for="#account of getAllAccounts()">
+      <tr *ngFor="#account of getAllAccounts()">
         <td>{{ account.id }}</td>
         <td>{{ account.balance }}</td>
       </tr>

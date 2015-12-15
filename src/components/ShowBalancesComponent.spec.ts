@@ -1,5 +1,3 @@
-/// <reference path="../../src/typings/_custom.d.ts" />
-
 import {
   describe,
   expect,
@@ -8,7 +6,7 @@ import {
   TestComponentBuilder
 } from 'angular2/testing'
 
-import {ShowBalancesComponent} from '../../src/app/ShowBalancesComponent'
+import {ShowBalancesComponent} from './ShowBalancesComponent'
 
 describe('ShowBalancesComponent', () => {
   it('should be empty to start', injectAsync([TestComponentBuilder], (tcb) => {

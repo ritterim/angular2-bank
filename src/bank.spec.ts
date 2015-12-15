@@ -1,5 +1,3 @@
-/// <reference path="../../src/typings/_custom.d.ts" />
-
 // Import necessary wrappers for Jasmine
 import {
   beforeEachProviders,
@@ -8,7 +6,7 @@ import {
   it
 } from 'angular2/testing'
 
-import {Bank} from '../../src/app/bank'
+import {Bank} from './bank'
 
 let bank: Bank
 let accountId = 'account-1'
@@ -32,7 +30,9 @@ describe('openAccount', () => {
     let initialBalance = 123.45
 
     expect(() => bank.openAccount('new-account', initialBalance))
-      .toThrowError(`The amount specified '${initialBalance}' must be an integer (decimals are not supported).`)
+      .toThrowError(
+        `The amount specified '${initialBalance}' must be an integer ` +
+        '(decimals are not supported).')
   })
 
   it('should open account with correct balance', () => {
@@ -93,7 +93,9 @@ describe('deposit', () => {
     let amount = 123.45
 
     expect(() => bank.deposit(accountId, amount))
-      .toThrowError(`The amount specified '${amount}' must be an integer (decimals are not supported)`)
+      .toThrowError(
+        `The amount specified '${amount}' must be an integer ` +
+        '(decimals are not supported)')
   })
 
   it('should keep same balance for zero amount', () => {
@@ -138,7 +140,9 @@ describe('withdraw', () => {
     let amount = 123.45
 
     expect(() => bank.withdraw(accountId, amount))
-      .toThrowError(`The amount specified '${amount}' must be an integer (decimals are not supported)`)
+      .toThrowError(
+        `The amount specified '${amount}' must be an integer ` +
+        '(decimals are not supported)')
   })
 
   it('should error if insufficient funds', () => {
@@ -207,7 +211,9 @@ describe('transfer', () => {
     let amount = 123.45
 
     expect(() => bank.transfer(accountId, account2Id, amount))
-      .toThrowError(`The amount specified '${amount}' must be an integer (decimals are not supported)`)
+      .toThrowError(
+        `The amount specified '${amount}' must be an integer ` +
+        '(decimals are not supported)')
   })
 
   it('should error if insufficient funds', () => {

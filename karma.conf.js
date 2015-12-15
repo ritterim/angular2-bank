@@ -14,9 +14,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      { pattern: './src/public/lib/es6-shim.js', watched: false },
-      // { pattern: 'test/**/*.spec.ts', watched: false }
-      { pattern: 'spec.bundle.js', watched: false }
+      // we are building the test environment in ./spec-bundle.js
+      { pattern: 'spec-bundle.js', watched: false }
     ],
 
 
@@ -28,35 +27,49 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'spec.bundle.js': ['webpack', 'sourcemap']
+      'spec-bundle.js': ['webpack', 'sourcemap']
       // 'test/**/*.spec.ts': ['webpack', 'sourcemap']
     },
 
     webpack: {
-      
+
       resolve: {
+        cache: false,
         root: __dirname,
-        extensions: ['','.ts','.js','.json'],
+        extensions: ['','.ts','.js','.json', '.css', '.html'],
         alias: {
           'app': 'src/app',
-          'common': 'src/common',
+          'common': 'src/common'
         }
       },
       devtool: 'inline-source-map',
       module: {
         loaders: [
-          { test: /\.tsx?$/,   loader: 'ts-loader', exclude: [
-              /web_modules/,
-              /node_modules/
-            ]
+          {
+            test: /\.ts$/,
+            loader: 'ts-loader',
+            query: {
+              'ignoreDiagnostics': [
+                2403, // 2403 -> Subsequent variable declarations
+                2300, // 2300 Duplicate identifier
+                2374, // 2374 -> Duplicate number index signature
+                2375  // 2375 -> Duplicate string index signature
+              ]
+            },
+            exclude: [ /\.e2e\.ts$/, /node_modules/ ]
           },
-          { test: /\.json$/, loader: 'json' },
-          { test: /\.html$/, loader: 'raw' },
-          { test: /\.css$/,  loader: 'raw' }
+          { test: /\.json$/, loader: 'json-loader' },
+          { test: /\.html$/, loader: 'raw-loader' },
+          { test: /\.css$/,  loader: 'raw-loader' }
         ]
       },
       stats: { colors: true, reasons: true },
-      debug: false
+      debug: false,
+      noParse: [
+        /zone\.js\/dist\/zone-microtask\.js/,
+        /zone\.js\/dist\/long-stack-trace-zone\.js/,
+        /zone\.js\/dist\/jasmine-patch\.js/
+      ]
     },
 
     webpackServer: {

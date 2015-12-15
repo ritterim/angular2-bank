@@ -1,5 +1,3 @@
-/// <reference path="../../src/typings/_custom.d.ts" />
-
 // Import necessary wrappers for Jasmine
 import {
   describe,
@@ -7,7 +5,7 @@ import {
   it
 } from 'angular2/testing'
 
-import {Account} from '../../src/app/account'
+import {Account} from './account'
 
 describe('constructor', () => {
   it('should throw for missing id', () => {
@@ -32,7 +30,9 @@ describe('constructor', () => {
     let initialBalance = 123.45
 
     expect(() => new Account('account-1', initialBalance))
-      .toThrowError(`The amount specified '${initialBalance}' must be an integer (decimals are not supported)`)
+      .toThrowError(
+        `The amount specified '${initialBalance}' must be an integer ` +
+        '(decimals are not supported)')
   })
 
   it('should default balance to zero if initialBalance is not specified', () => {

@@ -1,25 +1,25 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES5",
     "module": "commonjs",
-    "declaration": false,
-    "noImplicitAny": false,
     "removeComments": true,
-    "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
-    "listFiles": false,
-    "outDir": "dist"
+    "sourceMap": true
   },
-  "filesGlob": [
-    "./**/*.ts",
-    "!./node_modules/**/*.ts"
-  ],
   "files": [
-    "src/app/bootstrap.ts"
+    "test/injector.spec.ts",
+    "test/sanity-test.spec.ts",
+    "src/app/app.spec.ts",
+    "src/app/app.ts",
+    "src/components/ShowBalancesComponent.spec.ts",
+    "src/components/ShowBalancesComponent.ts",
+    "src/account.spec.ts",
+    "src/account.ts",
+    "src/bank.spec.ts",
+    "src/bank.ts",
+    "src/bootstrap.ts",
+    "src/vendor.ts"
   ],
-  "atom": {
-    "rewriteTsconfig": false
-  }
+  "compileOnSave": false
 }
