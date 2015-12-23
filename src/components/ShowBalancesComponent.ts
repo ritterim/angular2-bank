@@ -25,7 +25,7 @@ import {Bank} from '../bank';
     <tbody>
       <tr *ngFor="#account of accounts">
         <td>{{ account.id }}</td>
-        <td [class.zero-balance]="account.balance === 0">{{ account.balance }}</td>
+        <td [class.zero-balance]="isZeroBalance(account)">{{ account.balance }}</td>
       </tr>
     </tbody>
   </table>
@@ -48,6 +48,10 @@ export class ShowBalancesComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
     this._accountUpdatesSubscription.unsubscribe();
+  }
+
+  public isZeroBalance(account: Account) : boolean {
+    return account.balance === 0;
   }
 
   public refreshAccounts() : void {
