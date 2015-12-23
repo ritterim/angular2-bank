@@ -9,6 +9,10 @@ import {Bank} from '../bank';
   providers: [ Bank ],
   selector: 'show-balances',
   styles: [`
+    .zero-balance {
+      color: red;
+      font-weight: bold;
+    }
   `],
   template: `
   <table>
@@ -21,7 +25,7 @@ import {Bank} from '../bank';
     <tbody>
       <tr *ngFor="#account of accounts">
         <td>{{ account.id }}</td>
-        <td>{{ account.balance }}</td>
+        <td [class.zero-balance]="account.balance === 0">{{ account.balance }}</td>
       </tr>
     </tbody>
   </table>
