@@ -1,4 +1,5 @@
 import {
+  beforeEachProviders,
   describe,
   expect,
   injectAsync,
@@ -6,7 +7,12 @@ import {
   TestComponentBuilder
 } from 'angular2/testing';
 
+import {Bank} from '../bank';
 import {ShowBalancesComponent} from './ShowBalancesComponent';
+
+beforeEachProviders(() => {
+   Bank.clear();
+});
 
 describe('ShowBalancesComponent', () => {
   it('should be empty to start', injectAsync([TestComponentBuilder], (tcb) => {
@@ -49,8 +55,10 @@ describe('ShowBalancesComponent', () => {
     return tcb.createAsync(ShowBalancesComponent).then((fixture) => {
       fixture.detectChanges();
 
-      fixture.debugElement.componentInstance.bank.openAccount('account-1', 0);
-      fixture.debugElement.componentInstance.bank.openAccount('account-2', 0);
+      fixture.debugElement.componentInstance._bank.openAccount('account-1', 0);
+      fixture.debugElement.componentInstance._bank.openAccount('account-2', 0);
+
+      fixture.debugElement.componentInstance.refreshAccounts();
 
       fixture.detectChanges();
 
@@ -66,7 +74,9 @@ describe('ShowBalancesComponent', () => {
     return tcb.createAsync(ShowBalancesComponent).then((fixture) => {
       fixture.detectChanges();
 
-      fixture.debugElement.componentInstance.bank.openAccount('account-1', 0);
+      fixture.debugElement.componentInstance._bank.openAccount('account-1', 0);
+
+      fixture.debugElement.componentInstance.refreshAccounts();
 
       fixture.detectChanges();
 
@@ -83,7 +93,9 @@ describe('ShowBalancesComponent', () => {
     return tcb.createAsync(ShowBalancesComponent).then((fixture) => {
       fixture.detectChanges();
 
-      fixture.debugElement.componentInstance.bank.openAccount('account-1', 123);
+      fixture.debugElement.componentInstance._bank.openAccount('account-1', 123);
+
+      fixture.debugElement.componentInstance.refreshAccounts();
 
       fixture.detectChanges();
 
@@ -95,4 +107,17 @@ describe('ShowBalancesComponent', () => {
       expect(tdTags[1].innerHTML).toEqual('123');
     });
   }));
+
+  describe('refreshAccounts', () => {
+    it('should refresh accounts', () => {
+      let bank = new Bank();
+      let component = new ShowBalancesComponent(bank);
+
+      bank.openAccount('account-1');
+
+      component.refreshAccounts();
+
+      expect(component.accounts.length).toEqual(1);
+    });
+  });
 });

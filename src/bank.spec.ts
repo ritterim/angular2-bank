@@ -11,11 +11,25 @@ import {Bank} from './bank';
 let bank: Bank;
 let accountId = 'account-1';
 
-beforeEachProviders(() => {
-  bank = new Bank().openAccount(accountId);
+describe('clear', () => {
+  beforeEachProviders(() => {
+    Bank.clear();
+    bank = new Bank().openAccount(accountId);
+  });
+
+  it('should clear all accounts', () => {
+     Bank.clear();
+
+     expect(bank.getAllAccounts().length).toEqual(0);
+  });
 });
 
 describe('openAccount', () => {
+  beforeEachProviders(() => {
+    Bank.clear();
+    bank = new Bank().openAccount(accountId);
+  });
+
   it('should error if account already exists', () => {
     expect(() => bank.openAccount(accountId, 0))
       .toThrowError(`An account with id of \'${accountId}\' already exists.`);
@@ -44,9 +58,22 @@ describe('openAccount', () => {
     expect(account2.id).toEqual('account-2');
     expect(account2.balance).toEqual(initialBalance);
   });
+
+  it('should emit to accountUpdates', () => {
+     spyOn(Bank.accountUpdates, 'emit');
+
+     bank.openAccount('account-2');
+
+     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith('openAccount: account-2: 0');
+  });
 });
 
 describe('closeAccount', () => {
+  beforeEachProviders(() => {
+    Bank.clear();
+    bank = new Bank().openAccount(accountId);
+  });
+
   it('should error if account does not exist', () => {
     let accountIdDoesNotExist = 'does-not-exist';
 
@@ -67,9 +94,22 @@ describe('closeAccount', () => {
 
     expect(bank.getAllAccounts().length).toEqual(0);
   });
+
+  it('should emit to accountUpdates', () => {
+     spyOn(Bank.accountUpdates, 'emit');
+
+     bank.closeAccount(accountId);
+
+     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith(`closeAccount: ${accountId}`);
+  });
 });
 
 describe('deposit', () => {
+  beforeEachProviders(() => {
+    Bank.clear();
+    bank = new Bank().openAccount(accountId);
+  });
+
   it('should error if account does not exist', () => {
     let accountIdDoesNotExist = 'does-not-exist';
 
@@ -114,9 +154,23 @@ describe('deposit', () => {
 
     expect(bank.getBalance(accountId)).toEqual(startingBalance + amount);
   });
+
+  it('should emit to accountUpdates', () => {
+     let amount = 123;
+     spyOn(Bank.accountUpdates, 'emit');
+
+     bank.deposit(accountId, amount);
+
+     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith(`deposit: ${accountId}: ${amount}`);
+  });
 });
 
 describe('withdraw', () => {
+  beforeEachProviders(() => {
+    Bank.clear();
+    bank = new Bank().openAccount(accountId);
+  });
+
   it('should error if account does not exist', () => {
     let accountIdDoesNotExist = 'does-not-exist';
 
@@ -172,12 +226,25 @@ describe('withdraw', () => {
 
     expect(bank.getBalance(accountId)).toEqual(startingBalance);
   });
+
+  it('should emit to accountUpdates', () => {
+     let amount = 123;
+     bank.deposit(accountId, amount);
+     spyOn(Bank.accountUpdates, 'emit');
+
+     bank.withdraw(accountId, amount);
+
+     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith(`withdraw: ${accountId}: ${amount}`);
+  });
 });
 
 describe('transfer', () => {
   let account2Id = 'account-2';
 
   beforeEachProviders(() => {
+    Bank.clear();
+    bank = new Bank().openAccount(accountId);
+
     bank.openAccount(account2Id, 0);
   });
 
@@ -260,9 +327,24 @@ describe('transfer', () => {
 
     expect(bank.getBalance(account2Id)).toEqual(amount);
   });
+
+  it('should emit to accountUpdates', () => {
+     let amount = 123;
+     bank.deposit(accountId, amount);
+     spyOn(Bank.accountUpdates, 'emit');
+
+     bank.transfer(accountId, account2Id, amount);
+
+     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith(`transfer: ${accountId}: ${amount} => ${account2Id}`);
+  });
 });
 
 describe('getBalance', () => {
+  beforeEachProviders(() => {
+    Bank.clear();
+    bank = new Bank().openAccount(accountId);
+  });
+
   it('should error if account does not exist', () => {
     let accountIdDoesNotExist = 'does-not-exist';
 
@@ -279,6 +361,11 @@ describe('getBalance', () => {
 });
 
 describe('getAllAccounts', () => {
+  beforeEachProviders(() => {
+    Bank.clear();
+    bank = new Bank().openAccount(accountId);
+  });
+
   it('should return the complete collection of accounts', () => {
     bank.openAccount('account-2', 0);
 
@@ -287,6 +374,11 @@ describe('getAllAccounts', () => {
 });
 
 describe('getTotalBankCurrency', () => {
+  beforeEachProviders(() => {
+    Bank.clear();
+    bank = new Bank().openAccount(accountId);
+  });
+
   it('should return a total of all bank held currency', () => {
     let amount1 = 123;
     let amount2 = 234;

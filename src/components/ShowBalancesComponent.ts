@@ -1,4 +1,4 @@
-import { Component } from 'angular2/core';
+import { Component, OnDestroy, OnInit } from 'angular2/core';
 import { CORE_DIRECTIVES } from 'angular2/common';
 
 import {Account} from '../account';
@@ -19,7 +19,7 @@ import {Bank} from '../bank';
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="#account of getAllAccounts()">
+      <tr *ngFor="#account of accounts">
         <td>{{ account.id }}</td>
         <td>{{ account.balance }}</td>
       </tr>
@@ -27,14 +27,26 @@ import {Bank} from '../bank';
   </table>
   `
 })
-export class ShowBalancesComponent {
-  private bank: Bank;
+export class ShowBalancesComponent implements OnInit, OnDestroy {
+  public accounts: Account[];
+
+  private _accountUpdatesSubscription: any;
+  private _bank: Bank;
 
   constructor(bank: Bank) {
-    this.bank = bank;
+    this._bank = bank;
   }
 
-  public getAllAccounts() : Account[] {
-    return this.bank.getAllAccounts();
+  public ngOnInit() {
+    this._accountUpdatesSubscription = Bank.accountUpdates
+      .subscribe(() => this.refreshAccounts());
+  }
+
+  public ngOnDestroy() {
+    this._accountUpdatesSubscription.unsubscribe();
+  }
+
+  public refreshAccounts() : void {
+    this.accounts = this._bank.getAllAccounts();
   }
 }
