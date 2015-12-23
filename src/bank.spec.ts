@@ -64,7 +64,11 @@ describe('openAccount', () => {
 
      bank.openAccount('account-2');
 
-     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith('openAccount: account-2: 0');
+     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith({
+       operation: 'openAccount',
+       accountId: 'account-2',
+       initialBalance: 0
+    });
   });
 });
 
@@ -100,7 +104,10 @@ describe('closeAccount', () => {
 
      bank.closeAccount(accountId);
 
-     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith(`closeAccount: ${accountId}`);
+     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith({
+       operation: 'closeAccount',
+       accountId: accountId
+    });
   });
 });
 
@@ -161,7 +168,11 @@ describe('deposit', () => {
 
      bank.deposit(accountId, amount);
 
-     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith(`deposit: ${accountId}: ${amount}`);
+     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith({
+       operation: 'deposit',
+       accountId: accountId,
+       amount: amount
+    });
   });
 });
 
@@ -234,7 +245,11 @@ describe('withdraw', () => {
 
      bank.withdraw(accountId, amount);
 
-     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith(`withdraw: ${accountId}: ${amount}`);
+     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith({
+       operation: 'withdraw',
+       accountId: accountId,
+       amount: amount
+    });
   });
 });
 
@@ -335,7 +350,12 @@ describe('transfer', () => {
 
      bank.transfer(accountId, account2Id, amount);
 
-     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith(`transfer: ${accountId}: ${amount} => ${account2Id}`);
+     expect(Bank.accountUpdates.emit).toHaveBeenCalledWith({
+       operation: 'transfer',
+       fromAccountId: accountId,
+       toAccountId: account2Id,
+       amount: amount
+    });
   });
 });
 

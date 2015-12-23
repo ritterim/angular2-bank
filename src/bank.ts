@@ -29,7 +29,11 @@ export class Bank {
 
     Bank.accounts.push(new Account(accountId, initialBalance));
 
-    Bank.accountUpdates.emit(`openAccount: ${accountId}: ${initialBalance}`);
+    Bank.accountUpdates.emit({
+      operation: 'openAccount',
+      accountId: accountId,
+      initialBalance: initialBalance
+    });
 
     return this;
   }
@@ -43,7 +47,10 @@ export class Bank {
 
     Bank.accounts = Bank.accounts.filter(x => x.id !== accountId);
 
-    Bank.accountUpdates.emit(`closeAccount: ${accountId}`);
+    Bank.accountUpdates.emit({
+      operation: 'closeAccount',
+      accountId: accountId
+    });
 
     return this;
   }
@@ -67,7 +74,11 @@ export class Bank {
 
     account.balance += amount;
 
-    Bank.accountUpdates.emit(`deposit: ${accountId}: ${amount}`);
+    Bank.accountUpdates.emit({
+      operation: 'deposit',
+      accountId: accountId,
+      amount: amount
+    });
 
     return this;
   }
@@ -97,7 +108,11 @@ export class Bank {
 
     account.balance -= amount;
 
-    Bank.accountUpdates.emit(`withdraw: ${accountId}: ${amount}`);
+    Bank.accountUpdates.emit({
+      operation: 'withdraw',
+      accountId: accountId,
+      amount: amount
+    });
 
     return this;
   }
@@ -129,7 +144,12 @@ export class Bank {
     fromAccount.balance -= amount;
     toAccount.balance += amount;
 
-    Bank.accountUpdates.emit(`transfer: ${fromAccountId}: ${amount} => ${toAccountId}`);
+    Bank.accountUpdates.emit({
+      operation: 'transfer',
+      fromAccountId: fromAccountId,
+      toAccountId: toAccountId,
+      amount: amount
+    });
 
     return this;
   }
