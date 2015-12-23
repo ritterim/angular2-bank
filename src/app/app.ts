@@ -1,11 +1,17 @@
 import {Component} from 'angular2/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES } from 'angular2/common';
 
-import {ShowBalancesComponent} from '../components/ShowBalancesComponent';
 import {Bank} from '../bank';
+import {AccountOperationsComponent} from '../components/AccountOperationsComponent';
+import {ShowBalancesComponent} from '../components/ShowBalancesComponent';
 
 @Component({
-  directives: [ CORE_DIRECTIVES, FORM_DIRECTIVES, ShowBalancesComponent ],
+  directives: [
+    CORE_DIRECTIVES,
+    FORM_DIRECTIVES,
+    AccountOperationsComponent,
+    ShowBalancesComponent
+  ],
   pipes: [],
   providers: [ Bank ],
   selector: 'app',

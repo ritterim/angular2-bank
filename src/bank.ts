@@ -1,10 +1,13 @@
+import {EventEmitter} from 'angular2/core';
 import {Account} from './account';
 
 export class Bank {
-  private accounts: Account[];
+  public static accountUpdates: EventEmitter<any> = new EventEmitter();
 
-  constructor() {
-    this.accounts = new Array<Account>();
+  private static accounts: Account[] = new Array<Account>();
+
+  public static clear() : void {
+    Bank.accounts.length = 0;
   }
 
   public openAccount(accountId: string, initialBalance = 0) : Bank {
@@ -24,7 +27,13 @@ export class Bank {
         '(decimals are not supported).');
     }
 
-    this.accounts.push(new Account(accountId, initialBalance));
+    Bank.accounts.push(new Account(accountId, initialBalance));
+
+    Bank.accountUpdates.emit({
+      operation: 'openAccount',
+      accountId: accountId,
+      initialBalance: initialBalance
+    });
 
     return this;
   }
@@ -36,7 +45,12 @@ export class Bank {
       throw new Error(`The account balance must be zero (it is currently '${account.balance}').`);
     }
 
-    this.accounts = this.accounts.filter(x => x.id !== accountId);
+    Bank.accounts = Bank.accounts.filter(x => x.id !== accountId);
+
+    Bank.accountUpdates.emit({
+      operation: 'closeAccount',
+      accountId: accountId
+    });
 
     return this;
   }
@@ -59,6 +73,12 @@ export class Bank {
     }
 
     account.balance += amount;
+
+    Bank.accountUpdates.emit({
+      operation: 'deposit',
+      accountId: accountId,
+      amount: amount
+    });
 
     return this;
   }
@@ -87,6 +107,12 @@ export class Bank {
     }
 
     account.balance -= amount;
+
+    Bank.accountUpdates.emit({
+      operation: 'withdraw',
+      accountId: accountId,
+      amount: amount
+    });
 
     return this;
   }
@@ -118,6 +144,13 @@ export class Bank {
     fromAccount.balance -= amount;
     toAccount.balance += amount;
 
+    Bank.accountUpdates.emit({
+      operation: 'transfer',
+      fromAccountId: fromAccountId,
+      toAccountId: toAccountId,
+      amount: amount
+    });
+
     return this;
   }
 
@@ -128,15 +161,15 @@ export class Bank {
   }
 
   public getAllAccounts() : Account[] {
-    return this.accounts;
+    return Bank.accounts;
   }
 
   public getTotalBankCurrency() : number {
-    return this.accounts.map(x => x.balance).reduce((x, y) => x + y);
+    return Bank.accounts.map(x => x.balance).reduce((x, y) => x + y);
   }
 
   private getAccount(accountId: string, errorIfDoesNotExist = true) : Account {
-    let matchedAccounts = this.accounts.filter(x => x.id === accountId);
+    let matchedAccounts = Bank.accounts.filter(x => x.id === accountId);
 
     if (matchedAccounts.length === 0) {
       if (errorIfDoesNotExist) {
