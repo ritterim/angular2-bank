@@ -2,7 +2,9 @@ import {
   beforeEachProviders,
   describe,
   expect,
-  it
+  injectAsync,
+  it,
+  TestComponentBuilder
 } from 'angular2/testing';
 
 import {AccountOperationsComponent} from './AccountOperationsComponent';
@@ -18,6 +20,287 @@ beforeEachProviders(() => {
   Bank.clear();
   bank = new Bank();
   component = new AccountOperationsComponent(bank);
+});
+
+function getButton(compiled: any, innerText: string) : HTMLButtonElement {
+  // http://stackoverflow.com/a/222847
+  var buttons = [].slice.call(compiled.querySelectorAll('button'))
+    .filter(x => x.innerText === innerText);
+
+  if (buttons.length === 0) {
+    throw new Error(`No buttons were found with innerText: '${innerText}'.`);
+  }
+
+  if (buttons.length > 1) {
+    throw new Error(
+      `More than one button (${buttons.length}) was found with innerText: '${innerText}'.`);
+  }
+
+  return buttons[0];
+};
+
+describe('Open Account button', () => {
+  it('should be disabled when accountId is not provided', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+
+      let openAccountButton = getButton(compiled, 'Open Account');
+
+      expect(openAccountButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if accountId already exists', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId);
+      component.accountId = accountId;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let openAccountButton = getButton(compiled, 'Open Account');
+
+      expect(openAccountButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be enabled when conditions satisfied', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId);
+      component.accountId = 'account-2';
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let openAccountButton = getButton(compiled, 'Open Account');
+
+      expect(openAccountButton.hasAttribute('disabled')).toEqual(false);
+    });
+  }));
+});
+
+describe('Close Account button', () => {
+  it('should be disabled when accountId is not provided', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+
+      let closeAccountButton = getButton(compiled, 'Close Account');
+
+      expect(closeAccountButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if accountId does not exist', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component.accountId = accountId;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let closeAccountButton = getButton(compiled, 'Close Account');
+
+      expect(closeAccountButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if accountId does not have a zero balance', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId, 123);
+      component.accountId = accountId;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let closeAccountButton = getButton(compiled, 'Close Account');
+
+      expect(closeAccountButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be enabled when conditions satisfied', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId);
+      component.accountId = accountId;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let closeAccountButton = getButton(compiled, 'Close Account');
+
+      expect(closeAccountButton.hasAttribute('disabled')).toEqual(false);
+    });
+  }));
+});
+
+describe('Deposit button', () => {
+  it('should be disabled when accountId is not provided', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+
+      let depositButton = getButton(compiled, 'Deposit');
+
+      expect(depositButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if amount is negative', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId);
+      component.accountId = accountId;
+      component.amount = -1;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let depositButton = getButton(compiled, 'Deposit');
+
+      expect(depositButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if accountId does not exist', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component.accountId = accountId;
+      component.amount = 1;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let depositButton = getButton(compiled, 'Deposit');
+
+      expect(depositButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be enabled when conditions satisfied', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId);
+      component.accountId = accountId;
+      component.amount = 1;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let depositButton = getButton(compiled, 'Deposit');
+
+      expect(depositButton.hasAttribute('disabled')).toEqual(false);
+    });
+  }));
+});
+
+describe('Withdraw button', () => {
+  it('should be disabled when accountId is not provided', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+
+      let withdrawButton = getButton(compiled, 'Withdraw');
+
+      expect(withdrawButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if accountId does not exist', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component.accountId = accountId;
+      component.amount = 1;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let withdrawButton = getButton(compiled, 'Withdraw');
+
+      expect(withdrawButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if amount is negative', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId, 1);
+      component.accountId = accountId;
+      component.amount = -1;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let withdrawButton = getButton(compiled, 'Withdraw');
+
+      expect(withdrawButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if account does not have enough funds to complete withdraw', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId);
+      component.accountId = accountId;
+      component.amount = 1;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let withdrawButton = getButton(compiled, 'Withdraw');
+
+      expect(withdrawButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be enabled when conditions satisfied', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId, 1);
+      component.accountId = accountId;
+      component.amount = 1;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let withdrawButton = getButton(compiled, 'Withdraw');
+
+      expect(withdrawButton.hasAttribute('disabled')).toEqual(false);
+    });
+  }));
 });
 
 describe('openAccount', () => {
