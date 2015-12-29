@@ -277,6 +277,11 @@ describe('transfer', () => {
       .toThrowError(`There was no account with id of '${accountIdDoesNotExist}'.`);
   });
 
+  it('should error if \'from\' account and \'to\' account are the same account', () => {
+    expect(() => bank.transfer(accountId, accountId, 123))
+      .toThrowError('fromAccountId and toAccountId must not be the same account.');
+  });
+
   it('should error for missing amount', () => {
     expect(() => bank.transfer(accountId, account2Id, undefined))
       .toThrowError('amount must be specified.');

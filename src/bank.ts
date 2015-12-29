@@ -121,6 +121,10 @@ export class Bank {
     let fromAccount = this.getAccount(fromAccountId);
     let toAccount = this.getAccount(toAccountId);
 
+    if (fromAccountId === toAccountId) {
+      throw new Error('fromAccountId and toAccountId must not be the same account.');
+    }
+
     if (!amount && amount !== 0) {
       throw new Error('amount must be specified.');
     }

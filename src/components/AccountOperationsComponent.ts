@@ -17,12 +17,16 @@ import {Bank} from '../bank';
   <button (click)="closeAccount()" [disabled]="closeAccountProhibited">Close Account</button>
   <button (click)="deposit()" [disabled]="depositProhibited">Deposit</button>
   <button (click)="withdraw()" [disabled]="withdrawProhibited">Withdraw</button>
+  <hr />
+  <input [(ngModel)]="transferToAccountId" type="text" placeholder="transferToAccountId" />
+  <button (click)="transfer()" [disabled]="transferProhibited">Transfer</button>
   `
 })
 // TODO: Surface any errors to the user
 export class AccountOperationsComponent {
   public accountId: string;
   public amount: number = 0;
+  public transferToAccountId: string;
 
   public get openAccountProhibited() {
     if (!this.accountId) {
@@ -86,6 +90,44 @@ export class AccountOperationsComponent {
     return existingAccount.balance < this.amount;
   };
 
+  public get transferProhibited() {
+    if (!this.accountId) {
+      return true;
+    }
+
+    if (this.amount < 0) {
+      return true;
+    }
+
+    if (!this.transferToAccountId) {
+      return true;
+    }
+
+    if (this.accountId === this.transferToAccountId) {
+      return true;
+    }
+
+    let existingAccounts = this._bank
+      .getAllAccounts()
+      .filter(x => x.id === this.accountId);
+
+    if (existingAccounts.length === 0) {
+      return true;
+    }
+
+    let existingAccount = existingAccounts[0];
+
+    if (existingAccount.balance < this.amount) {
+      return true;
+    }
+
+    let anyExistingTransferToAccount = this._bank
+      .getAllAccounts()
+      .some(x => x.id === this.transferToAccountId);
+
+    return !anyExistingTransferToAccount;
+  };
+
   private _bank: Bank;
 
   constructor(bank: Bank) {
@@ -141,6 +183,25 @@ export class AccountOperationsComponent {
     this._bank.withdraw(this.accountId, this.amount);
 
     this.resetAmount();
+  }
+
+  public transfer() : void {
+    if (!this.accountId) {
+      throw new Error('accountId must be provided.');
+    }
+
+    if (!this.amount) {
+      throw new Error('amount must be provided.');
+    }
+
+    if (!this.transferToAccountId) {
+      throw new Error('transferToAccountId must be provided.');
+    }
+
+    this._bank.transfer(this.accountId, this.transferToAccountId, this.amount);
+
+    this.resetAmount();
+    this.transferToAccountId = null;
   }
 
   private resetAmount() : void {

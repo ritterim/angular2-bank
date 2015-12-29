@@ -303,6 +303,142 @@ describe('Withdraw button', () => {
   }));
 });
 
+describe('Transfer button', () => {
+  let account2Id = 'account-2';
+
+  it('should be disabled when accountId is not provided', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component.amount = 1;
+      component.transferToAccountId = account2Id;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let transferButton = getButton(compiled, 'Transfer');
+
+      expect(transferButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled when transferToAccountId is not provided', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component.accountId = accountId;
+      component.amount = 1;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let transferButton = getButton(compiled, 'Transfer');
+
+      expect(transferButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if accountId does not exist', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(account2Id);
+      component.accountId = accountId;
+      component.amount = 1;
+      component.transferToAccountId = account2Id;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let transferButton = getButton(compiled, 'Transfer');
+
+      expect(transferButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if transferToAccountId does not exist', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId, 1);
+      component.accountId = accountId;
+      component.amount = 1;
+      component.transferToAccountId = account2Id;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let transferButton = getButton(compiled, 'Transfer');
+
+      expect(transferButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if amount is negative', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId);
+      component._bank.openAccount(account2Id);
+      component.accountId = accountId;
+      component.amount = -1;
+      component.transferToAccountId = account2Id;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let transferButton = getButton(compiled, 'Transfer');
+
+      expect(transferButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if account does not have enough funds to complete transfer', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId);
+      component._bank.openAccount(account2Id);
+      component.accountId = accountId;
+      component.amount = 1;
+      component.transferToAccountId = account2Id;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let transferButton = getButton(compiled, 'Transfer');
+
+      expect(transferButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be enabled when conditions satisfied', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId, 1);
+      component._bank.openAccount(account2Id);
+      component.accountId = accountId;
+      component.amount = 1;
+      component.transferToAccountId = account2Id;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let transferButton = getButton(compiled, 'Transfer');
+
+      expect(transferButton.hasAttribute('disabled')).toEqual(false);
+    });
+  }));
+});
+
 describe('openAccount', () => {
   it('should throw for missing accountId', () => {
     component.amount = amount;
@@ -440,6 +576,60 @@ describe('withdraw', () => {
     component.amount = amount;
 
     component.withdraw();
+
+    expect(component.amount).toEqual(0);
+  });
+});
+
+describe('transfer', () => {
+  let transferToAccountId = 'account-2';
+
+  beforeEachProviders(() => {
+    bank.openAccount(accountId, amount);
+    bank.openAccount(transferToAccountId);
+  });
+
+  it('should throw for missing accountId', () => {
+    component.amount = amount;
+    component.transferToAccountId = transferToAccountId;
+
+    expect(() => component.transfer())
+      .toThrowError('accountId must be provided.');
+  });
+
+  it('should throw for missing amount', () => {
+    component.accountId = accountId;
+    component.transferToAccountId = transferToAccountId;
+
+    expect(() => component.transfer())
+      .toThrowError('amount must be provided.');
+  });
+
+  it('should throw for missing transferToAccountId', () => {
+    component.accountId = accountId;
+    component.amount = amount;
+
+    expect(() => component.transfer())
+      .toThrowError('transferToAccountId must be provided.');
+  });
+
+  it('should perform transfer', () => {
+    component.accountId = accountId;
+    component.amount = amount;
+    component.transferToAccountId = transferToAccountId;
+    spyOn(bank, 'transfer');
+
+    component.transfer();
+
+    expect(bank.transfer).toHaveBeenCalledWith(accountId, transferToAccountId, amount);
+  });
+
+  it('should reset amount', () => {
+    component.accountId = accountId;
+    component.amount = amount;
+    component.transferToAccountId = transferToAccountId;
+
+    component.transfer();
 
     expect(component.amount).toEqual(0);
   });
