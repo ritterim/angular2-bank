@@ -470,7 +470,7 @@ describe('openAccount', () => {
 
     component.openAccount();
 
-    expect(component.amount).toEqual(0);
+    expect(component.amount).toBeUndefined();
   });
 });
 
@@ -499,7 +499,7 @@ describe('closeAccount', () => {
 
     component.closeAccount();
 
-    expect(component.amount).toEqual(0);
+    expect(component.amount).toBeUndefined();
   });
 });
 
@@ -538,7 +538,7 @@ describe('deposit', () => {
 
     component.deposit();
 
-    expect(component.amount).toEqual(0);
+    expect(component.amount).toBeUndefined();
   });
 });
 
@@ -577,7 +577,7 @@ describe('withdraw', () => {
 
     component.withdraw();
 
-    expect(component.amount).toEqual(0);
+    expect(component.amount).toBeUndefined();
   });
 });
 
@@ -631,6 +631,6 @@ describe('transfer', () => {
 
     component.transfer();
 
-    expect(component.amount).toEqual(0);
+    expect(component.amount).toBeUndefined();
   });
 });

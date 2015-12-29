@@ -25,7 +25,7 @@ import {Bank} from '../bank';
 // TODO: Surface any errors to the user
 export class AccountOperationsComponent {
   public accountId: string;
-  public amount: number = 0;
+  public amount: number;
   public transferToAccountId: string;
 
   public get openAccountProhibited() {
@@ -205,6 +205,6 @@ export class AccountOperationsComponent {
   }
 
   private resetAmount() : void {
-    this.amount = 0;
+    this.amount = undefined;
   }
 }
