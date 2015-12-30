@@ -1,6 +1,7 @@
-.title {
-  font-family: Arial, Helvetica, sans-serif;
+.bank-no-control-header {
+  padding-left: 15px;
 }
-main {
-  padding: 1em;
+.bank-narrow-footer {
+  padding-top: 0;
+  padding-bottom: 0;
 }

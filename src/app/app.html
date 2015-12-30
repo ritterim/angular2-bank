@@ -1,14 +1,25 @@
-<header>
-  <h1 class="title">Angular2 Bank</h1>
-</header>
-
-<main>
-  <show-balances></show-balances>
-  <hr />
-  <account-operations></account-operations>
-</main>
-
-<footer>
-  An example Angular2 application built by
-  <a href="https://www.ritterim.com">Ritter Insurance Marketing</a>.
-</footer>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row bank-no-control-header">
+      <span class="mdl-layout-title">Angular2 Bank</span>
+    </div>
+  </header>
+  <main class="mdl-layout__content">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--4-col">
+        <h5>Account Balances</h5>
+        <show-balances></show-balances>
+      </div>
+      <div class="mdl-cell mdl-cell--4-col">
+        <h5>Account Operations</h5>
+        <account-operations></account-operations>
+      </div>
+    </div>
+  </main>
+  <footer class="mdl-mini-footer bank-narrow-footer">
+    <div class="mdl-logo">
+      An example Angular2 application built by
+      <a href="http://rimdev.io">RIMdev</a>.
+    </div>
+  </footer>
+</div>
