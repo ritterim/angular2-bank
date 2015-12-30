@@ -1,4 +1,5 @@
 import {
+  describe,
   it,
   inject,
   injectAsync,
@@ -13,7 +14,7 @@ import {MockBackend} from 'angular2/http/testing';
 // Load the implementations that should be tested
 import {App} from './app';
 
-describe('Home', () => {
+describe('App', () => {
   // provide our implementations or mocks to the dependency injector
   beforeEachProviders(() => [
     App,
@@ -26,8 +27,11 @@ describe('Home', () => {
       deps: [MockBackend, BaseRequestOptions]})
   ]);
 
-  /*it('should have a title', inject([ Home ], (app) => {
-    expect(app.title.value).toEqual('Angular 2');
-  }));*/
+  it('should log ngOnInit', inject([ App ], (app) => {
+    spyOn(console, 'log');
+    expect(console.log).not.toHaveBeenCalled();
 
+    app.ngOnInit();
+    expect(console.log).toHaveBeenCalled();
+  }));
 });

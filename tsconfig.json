@@ -5,6 +5,7 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noEmitHelpers": false,
     "sourceMap": true
   },
   "files": [
@@ -20,6 +21,7 @@
     "./src/components/ShowBalancesComponent.spec.ts",
     "./src/components/ShowBalancesComponent.ts",
     "./src/vendor.ts",
+    "./src/polyfills.ts",
     "./test/injector.spec.ts",
     "./test/sanity-test.spec.ts"
   ],
