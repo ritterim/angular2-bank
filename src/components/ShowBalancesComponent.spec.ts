@@ -7,6 +7,7 @@ import {
   TestComponentBuilder
 } from 'angular2/testing';
 
+import {Account} from '../account';
 import {Bank} from '../bank';
 import {ShowBalancesComponent} from './ShowBalancesComponent';
 
@@ -107,6 +108,26 @@ describe('ShowBalancesComponent', () => {
       expect(tdTags[1].innerHTML).toEqual('123');
     });
   }));
+
+  describe('isZeroBalance', () => {
+    it('should return true for zero value', () => {
+      let bank = new Bank();
+      let component = new ShowBalancesComponent(bank);
+
+      let result = component.isZeroBalance(new Account('account-1', 0))
+
+      expect(result).toEqual(true);
+    });
+
+    it('should return false for positive value', () => {
+      let bank = new Bank();
+      let component = new ShowBalancesComponent(bank);
+
+      let result = component.isZeroBalance(new Account('account-1', 123))
+
+      expect(result).toEqual(false);
+    });
+  });
 
   describe('refreshAccounts', () => {
     it('should refresh accounts', () => {
