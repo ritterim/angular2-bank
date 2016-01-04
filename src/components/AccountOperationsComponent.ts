@@ -9,6 +9,15 @@ import {Bank} from '../bank';
   providers: [ Bank ],
   selector: 'account-operations',
   styles: [`
+  .bank-textfield--account-id-label {
+    width: 200px;
+  }
+  .bank-textfield--amount-label {
+    width: 125px;
+  }
+  .bank-button {
+    width: 150px;
+  }
   `],
   template: require('./AccountOperationsComponent.html')
 })

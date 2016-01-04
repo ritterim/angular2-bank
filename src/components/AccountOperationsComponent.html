@@ -1,4 +1,4 @@
-<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 200px;">
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label bank-textfield--account-id-label">
   <input
     class="mdl-textfield__input"
     [(ngModel)]="accountId"
@@ -7,7 +7,7 @@
   <label class="mdl-textfield__label" for="accountId">AccountId...</label>
 </div>
 
-<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 125px;">
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label bank-textfield--amount-label">
 <input
   class="mdl-textfield__input"
   [(ngModel)]="amount"
@@ -20,15 +20,15 @@
 
 <br />
 
-<button style="width: 150px;"
-  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+<button
+  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect bank-button"
   (click)="openAccount()"
   [disabled]="openAccountProhibited">
   Open Account
 </button>
 
-<button style="width: 150px;"
-  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+<button
+  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect bank-button"
   (click)="closeAccount()"
   [disabled]="closeAccountProhibited">
   Close Account
@@ -37,15 +37,15 @@
 <br />
 <br />
 
-<button style="width: 150px;"
-  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+<button
+  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect bank-button"
   (click)="deposit()"
   [disabled]="depositProhibited">
   Deposit
 </button>
 
-<button style="width: 150px;"
-  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+<button
+  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect bank-button"
   (click)="withdraw()"
   [disabled]="withdrawProhibited">
   Withdraw
