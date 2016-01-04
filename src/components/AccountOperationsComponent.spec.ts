@@ -164,6 +164,23 @@ describe('Deposit button', () => {
     });
   }));
 
+  it('should be disabled if amount is not provided', injectAsync([TestComponentBuilder], (tcb) => {
+      return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId);
+      component.accountId = accountId;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let depositButton = getButton(compiled, 'Deposit');
+
+      expect(depositButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
   it('should be disabled if amount is negative', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
       fixture.detectChanges();
@@ -238,6 +255,23 @@ describe('Withdraw button', () => {
       let component = fixture.debugElement.componentInstance;
       component.accountId = accountId;
       component.amount = 1;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let withdrawButton = getButton(compiled, 'Withdraw');
+
+      expect(withdrawButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if amount is not provided', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId, 1);
+      component.accountId = accountId;
 
       fixture.detectChanges();
 
@@ -367,6 +401,25 @@ describe('Transfer button', () => {
       component._bank.openAccount(accountId, 1);
       component.accountId = accountId;
       component.amount = 1;
+      component.transferToAccountId = account2Id;
+
+      fixture.detectChanges();
+
+      let compiled = fixture.debugElement.nativeElement;
+      let transferButton = getButton(compiled, 'Transfer');
+
+      expect(transferButton.hasAttribute('disabled')).toEqual(true);
+    });
+  }));
+
+  it('should be disabled if amount is not provided', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AccountOperationsComponent).then((fixture) => {
+      fixture.detectChanges();
+
+      let component = fixture.debugElement.componentInstance;
+      component._bank.openAccount(accountId);
+      component._bank.openAccount(account2Id);
+      component.accountId = accountId;
       component.transferToAccountId = account2Id;
 
       fixture.detectChanges();

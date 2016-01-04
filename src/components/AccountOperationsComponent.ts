@@ -47,7 +47,7 @@ export class AccountOperationsComponent {
       return true;
     }
 
-    if (this.amount < 0) {
+    if (!this.amount || this.amount < 0) {
       return true;
     }
 
@@ -63,7 +63,7 @@ export class AccountOperationsComponent {
       return true;
     }
 
-    if (this.amount < 0) {
+    if (!this.amount || this.amount < 0) {
       return true;
     }
 
@@ -85,7 +85,7 @@ export class AccountOperationsComponent {
       return true;
     }
 
-    if (this.amount < 0) {
+    if (!this.amount || this.amount < 0) {
       return true;
     }
 
