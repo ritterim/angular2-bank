@@ -1,0 +1,71 @@
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label bank-textfield--account-id-label">
+  <input
+    class="mdl-textfield__input"
+    [(ngModel)]="accountId"
+    type="text"
+    id="accountId">
+  <label class="mdl-textfield__label" for="accountId">AccountId...</label>
+</div>
+
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label bank-textfield--amount-label">
+<input
+  class="mdl-textfield__input"
+  [(ngModel)]="amount"
+  type="number"
+  pattern="[0-9]*"
+  id="amount">
+<label class="mdl-textfield__label" for="amount">Amount...</label>
+<span class="mdl-textfield__error">Amount must be a whole number.</span>
+</div>
+
+<br />
+
+<button
+  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect bank-button"
+  (click)="openAccount()"
+  [disabled]="openAccountProhibited">
+  Open Account
+</button>
+
+<button
+  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect bank-button"
+  (click)="closeAccount()"
+  [disabled]="closeAccountProhibited">
+  Close Account
+</button>
+
+<br />
+<br />
+
+<button
+  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect bank-button"
+  (click)="deposit()"
+  [disabled]="depositProhibited">
+  Deposit
+</button>
+
+<button
+  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect bank-button"
+  (click)="withdraw()"
+  [disabled]="withdrawProhibited">
+  Withdraw
+</button>
+
+<hr />
+
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+<input
+  class="mdl-textfield__input"
+  [(ngModel)]="transferToAccountId"
+  type="text"
+  id="transferToAccountId"
+/>
+<label class="mdl-textfield__label" for="transferToAccountId">Account Id...</label>
+</div>
+
+<button
+  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+  (click)="transfer()"
+  [disabled]="transferProhibited">
+  Transfer
+</button>

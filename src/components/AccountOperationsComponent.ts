@@ -9,23 +9,22 @@ import {Bank} from '../bank';
   providers: [ Bank ],
   selector: 'account-operations',
   styles: [`
+  .bank-textfield--account-id-label {
+    width: 200px;
+  }
+  .bank-textfield--amount-label {
+    width: 125px;
+  }
+  .bank-button {
+    width: 150px;
+  }
   `],
-  template: `
-  <input [(ngModel)]="accountId" type="text" placeholder="accountId" />
-  <input [(ngModel)]="amount" type="number" placeholder="amount" />
-  <button (click)="openAccount()" [disabled]="openAccountProhibited">Open Account</button>
-  <button (click)="closeAccount()" [disabled]="closeAccountProhibited">Close Account</button>
-  <button (click)="deposit()" [disabled]="depositProhibited">Deposit</button>
-  <button (click)="withdraw()" [disabled]="withdrawProhibited">Withdraw</button>
-  <hr />
-  <input [(ngModel)]="transferToAccountId" type="text" placeholder="transferToAccountId" />
-  <button (click)="transfer()" [disabled]="transferProhibited">Transfer</button>
-  `
+  template: require('./AccountOperationsComponent.html')
 })
 // TODO: Surface any errors to the user
 export class AccountOperationsComponent {
   public accountId: string;
-  public amount: number = 0;
+  public amount: number;
   public transferToAccountId: string;
 
   public get openAccountProhibited() {
@@ -57,7 +56,7 @@ export class AccountOperationsComponent {
       return true;
     }
 
-    if (this.amount < 0) {
+    if (!this.amount || this.amount < 0) {
       return true;
     }
 
@@ -73,7 +72,7 @@ export class AccountOperationsComponent {
       return true;
     }
 
-    if (this.amount < 0) {
+    if (!this.amount || this.amount < 0) {
       return true;
     }
 
@@ -95,7 +94,7 @@ export class AccountOperationsComponent {
       return true;
     }
 
-    if (this.amount < 0) {
+    if (!this.amount || this.amount < 0) {
       return true;
     }
 
@@ -205,6 +204,6 @@ export class AccountOperationsComponent {
   }
 
   private resetAmount() : void {
-    this.amount = 0;
+    this.amount = undefined;
   }
 }
