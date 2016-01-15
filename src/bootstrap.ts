@@ -9,6 +9,9 @@ import {ELEMENT_PROBE_PROVIDERS} from 'angular2/platform/common_dom';
 // include for production builds
 // import {enableProdMode} from 'angular2/core';
 
+import {ExceptionHandler, provide} from 'angular2/core';
+import {UserNotifyingExceptionHandler} from './UserNotifyingExceptionHandler';
+
 /*
  * App Component
  * our top level component that holds all of our components
@@ -22,6 +25,9 @@ import {App} from './app/app';
 // enableProdMode() // include for production builds
 function main() {
   return bootstrap(App, [
+    // This paves over the default ExceptionHandler.
+    provide(ExceptionHandler, {useClass: UserNotifyingExceptionHandler}),
+
     // These are dependencies of our App
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
