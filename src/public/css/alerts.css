@@ -1,0 +1,25 @@
+/* Adapted from CSS posted at https://www.npmjs.com/package/alerts */
+.alerts {
+	position: fixed;
+	z-index: 10000;
+	width: 30em;
+	top: 1em;
+	right: 1em;
+}
+
+.alerts > div {
+	padding: .8em;
+	margin-bottom: .4em;
+	background-color: lightpink;
+	cursor: default;
+  transition: opacity .2s;
+}
+
+.alerts > .alert,
+.alerts > .alert-dismiss {
+	opacity: 0;
+}
+
+.alerts > .alert-show {
+	opacity: 1;
+}

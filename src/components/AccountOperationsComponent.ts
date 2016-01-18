@@ -21,7 +21,6 @@ import {Bank} from '../bank';
   `],
   template: require('./AccountOperationsComponent.html')
 })
-// TODO: Surface any errors to the user
 export class AccountOperationsComponent {
   public accountId: string;
   public amount: number;
